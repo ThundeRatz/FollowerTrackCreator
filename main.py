@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QVBoxLayout, \
     QTextEdit, QPushButton, QGraphicsView, QGraphicsScene, QDesktopWidget
-from PyQt5.QtGui import QPen, QPainter, QPainterPath, QBrush
+from PyQt5.QtGui import QPen, QPainter, QPainterPath, QBrush, QFont
 from PyQt5.QtCore import Qt, pyqtSignal
 import math, sys
 from typing import Tuple
@@ -38,27 +38,18 @@ class DrawingApp(QWidget):
         layout.addLayout(right_panel, stretch=1)
 
         self.editor = CommandEditor()
-        self.editor.setPlainText("""inicio 300 100 0
-tamanho 800 800
+        self.editor.setPlainText("""inicio 250 100 0
+tamanho 600 400
+reta 100
 reta 100
 arco r 100 180
-arco l 40 90
-reta 50
-arco l 150 180
-reta 200
-arco l 30 45
-reta 60
-arco r 40 135
-reta 70
-arco r 50 90
-reta 450
-arco r 50 90
-reta 600
-arco l 80 270
-reta 550
-arco r 38 90
-reta 73
+reta 300
+arco r 100 180
+reta 100
 """)
+        font = QFont()
+        font.setPointSize(20)
+        self.editor.setFont(font)
         right_panel.addWidget(self.editor)
 
         self.btn_draw = QPushButton("Desenhar")

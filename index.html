@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FollowerTrackCreator Web</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="editor-panel">
+            <div class="editor-header">
+                <h2>LFDL Editor</h2>
+                <div class="editor-actions">
+                    <button id="btn-example">Exemplo</button>
+                    <button id="btn-clear">Limpar</button>
+                </div>
+            </div>
+            <div id="editor-container"></div>
+        </div>
+
+        <div class="canvas-panel">
+            <div class="canvas-header">
+                <h2>Pista Preview</h2>
+                <div class="canvas-info">
+                    <span id="track-info">Pronto para desenhar</span>
+                </div>
+            </div>
+            <div id="canvas-container"></div>
+        </div>
+    </div>
+
+    <!-- p5.js - Load first -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.min.js" onload="console.log('p5.js loaded via onload')" onerror="console.error('Failed to load p5.js')"></script>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+    <!-- Main application - Load after dependencies -->
+    <script type="module" src="js/main.js" defer></script>
+</body>
+</html>

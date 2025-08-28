@@ -1,88 +1,98 @@
-# FollowerTrackCreator
+# FollowerTrackCreator Web
 
-**FollowerTrackCreator** é uma ferramenta simples para auxiliar no **desenho de pistas** usadas em competições de seguidores de linha, seguindo o formato da categoria **Robotrace** do *All Japan Micromouse Contest*.  
+Uma aplicação web para criação e visualização de pistas para robôs seguidores de linha usando a linguagem LFDL (Line Follower Description Language).
 
-A ideia é descrever a pista como uma **lista de segmentos** (retas e arcos) em um painel de texto, e visualizar automaticamente o traçado no painel gráfico.
+## 🚀 Características
 
----
+- **Editor Monaco**: Syntax highlighting e autocomplete para LFDL
+- **Renderização em tempo real**: Visualização instantânea da pista com p5.js
+- **DSL intuitiva**: Comandos simples em inglês (`straight`, `arc`)
+- **Validação automática**: Verificação das regras da RoboCore
+- **Deploy simples**: Aplicação estática sem build tools
 
-## ✨ Funcionalidades
-- Editor de texto integrado para descrição da pista.  
-- Suporte a comandos básicos como retas e arcos (`reta`, `arco l`, `arco r`).  
-- Atualização automática do desenho ao pressionar **Enter** ou **Shift+Enter**.  
-- Ajuste automático da cena para visualizar toda a pista.    
+## 📋 Como usar
 
----
+1. **Abra o arquivo `index.html` no navegador**
+2. **Escreva código LFDL no editor**:
+   ```lfdl
+   @size 600 400
+   @start 100 100 0
 
-## 🖼️ Demonstração
+   straight 200
+   arc r 100 90
+   straight 100
+   ```
+3. **Veja a pista sendo renderizada automaticamente**
 
-![example_creation](media/example_track_creation.gif)
+## 📝 Sintaxe LFDL
 
-## ⚙️ Instalação
+### Diretivas de Configuração
+- `@size <largura> <altura>` - Define o tamanho do canvas
+- `@start <x> <y> <ângulo>` - Define posição e orientação inicial
 
-Clone o repositório:
+### Comandos de Desenho
+- `straight <distância>` - Desenha linha reta em mm
+- `arc <l|r> <raio> <ângulo>` - Desenha arco (esquerda/direita)
 
-```bash
-git clone https://github.com/seu-usuario/FollowerTrackCreator.git
-cd FollowerTrackCreator
+### Exemplo Completo
+```lfdl
+# Pista retangular simples
+@size 600 400
+@start 200 50 0
+
+straight 200
+arc r 100 90
+straight 100
+arc r 100 90
+straight 200
+arc r 100 90
+straight 100
+arc r 100 90
 ```
 
-Crie um ambiente virtual (opcional, mas recomendado):
+## 🛠️ Estrutura do Projeto
 
-```bash
-python3 -m venv venv
-source venv/bin/activate   # Linux/macOS
-venv\Scripts\activate      # Windows
+```
+/
+├── index.html              # Página principal
+├── css/
+│   └── style.css          # Estilos da aplicação
+├── js/
+│   ├── main.js            # Aplicação principal
+│   ├── parser.js          # Parser LFDL
+│   ├── renderer.js        # Renderização com p5.js
+│   ├── validator.js       # Validação de pistas
+│   └── editor.js          # Integração Monaco Editor
+└── docs/                  # Documentação adicional
 ```
 
-Instale as dependências:
+## 🎯 Regras da RoboCore
 
-```bash
-pip install -r requirements.txt
-```
+O sistema implementa automaticamente:
+- ✅ Raio mínimo de arcos: 100mm
+- ✅ Largura da linha: 19mm
+- ✅ Comprimento máximo: 60m (Pro), 20m (Junior)
+- ✅ Marcadores entre segmentos
+- ✅ Indicadores visuais de início/fim
 
-### Dependências principais
-- [PyQt5](https://pypi.org/project/PyQt5/) — interface gráfica.  
-- Python ≥ 3.8  
+## 🖥️ Requisitos
 
-O arquivo `requirements.txt` pode conter algo simples como:
-```
-PyQt5>=5.15
-```
+- Navegador moderno com suporte a ES6 modules
+- Conexão com internet (para CDN do Monaco Editor)
 
----
+## 📊 Validação
 
-## ▶️ Utilização
+O sistema valida automaticamente:
+- Sintaxe dos comandos LFDL
+- Regras da RoboCore (raios, comprimentos)
+- Categorias Junior/Pro
+- Estatísticas da pista (comandos, comprimento, complexidade)
 
-Execute a aplicação com:
+## 🎨 Editor
 
-```bash
-python main.py
-```
-
-A janela se abrirá com duas áreas:
-- **Painel lateral (texto):** onde você digita a sequência de comandos da pista.  
-- **Área gráfica:** mostra a pista correspondente.  
-
-### Comandos disponíveis
-- `inicio x y angulo` → Define ponto inicial `(x, y)` e direção em graus.  
-- `reta d` → Desenha uma reta de comprimento `d`.  
-- `arco l r θ` → Desenha um arco à esquerda de raio `r` e ângulo `θ`.  
-- `arco r r θ` → Desenha um arco à direita de raio `r` e ângulo `θ`.  
-
-### Exemplo de pista
-
-```txt
-inicio 250 100 0
-tamanho 600 400
-reta 100
-reta 100
-arco r 100 180
-reta 300
-arco r 100 180
-reta 100
-```
-
----
-
+O Monaco Editor fornece:
+- **Syntax highlighting** para comandos LFDL
+- **Autocomplete inteligente** com snippets
+- **Validação em tempo real**
+- **Tema escuro** otimizado para LFDL
 

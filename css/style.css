@@ -1,0 +1,172 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Main container with grid layout */
+.container {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    height: 100vh;
+    gap: 1px;
+    background-color: #333;
+}
+
+/* Editor panel */
+.editor-panel {
+    background-color: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #333;
+}
+
+.editor-header {
+    padding: 12px 16px;
+    background-color: #2d2d30;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editor-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #cccccc;
+}
+
+.editor-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.editor-actions button {
+    padding: 4px 12px;
+    font-size: 12px;
+    background-color: #0e639c;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.editor-actions button:hover {
+    background-color: #1177bb;
+}
+
+#editor-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+}
+
+/* Monaco editor will fill this container */
+
+/* Canvas panel */
+.canvas-panel {
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas-header {
+    padding: 12px 16px;
+    background-color: #2d2d30;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.canvas-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #cccccc;
+}
+
+.canvas-info {
+    font-size: 12px;
+    color: #888;
+}
+
+#canvas-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+}
+
+/* Monaco editor customization */
+.monaco-editor {
+    background-color: #1e1e1e !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', Consolas, 'Courier New', monospace !important;
+}
+
+.monaco-editor .margin {
+    background-color: #1e1e1e !important;
+}
+
+.monaco-editor .monaco-editor-background {
+    background-color: #1e1e1e !important;
+}
+
+.monaco-editor .current-line {
+    background-color: #2d2d30 !important;
+}
+
+.monaco-editor .line-numbers {
+    color: #858585 !important;
+}
+
+.monaco-editor .cursor {
+    color: #ffffff !important;
+}
+
+/* Canvas styling */
+canvas {
+    border: 1px solid #333;
+    background-color: #000;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 50% 50%;
+    }
+
+    .editor-panel {
+        border-right: none;
+        border-bottom: 1px solid #333;
+    }
+}
+
+/* Loading state */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Error display */
+.error-message {
+    color: #f85149;
+    font-size: 12px;
+    padding: 8px;
+    background-color: rgba(248, 81, 73, 0.1);
+    border-left: 3px solid #f85149;
+    margin: 8px;
+}

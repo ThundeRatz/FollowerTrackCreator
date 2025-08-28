@@ -29,7 +29,7 @@ export class LFDLParser {
             }
 
             try {
-                const parsed = this.parseLine(line)
+                const parsed = this.parseLine(line, i + 1) // Pass line number
 
                 if (parsed.type === 'directive') {
                     this.applyDirective(config, parsed)
@@ -54,7 +54,7 @@ export class LFDLParser {
      * @param {string} line - Single line of LFDL code
      * @returns {Object} Parsed line object
      */
-    parseLine(line) {
+    parseLine(line, lineNumber = 0) {
         const parts = line.split(/\s+/).filter(p => p.length > 0)
 
         if (parts.length === 0) {
@@ -64,10 +64,10 @@ export class LFDLParser {
         const cmd = parts[0].toLowerCase()
 
         if (cmd.startsWith('@')) {
-            return this.parseDirective(cmd.substring(1), parts.slice(1))
+            return this.parseDirective(cmd.substring(1), parts.slice(1), lineNumber)
         }
 
-        return this.parseCommand(cmd, parts.slice(1))
+        return this.parseCommand(cmd, parts.slice(1), lineNumber)
     }
 
     /**
@@ -109,7 +109,7 @@ export class LFDLParser {
      * @param {string[]} args - Arguments array
      * @returns {Object} Command object
      */
-    parseCommand(command, args) {
+    parseCommand(command, args, lineNumber = 0) {
         switch (command) {
             case 'straight':
                 if (args.length !== 1) {
@@ -118,7 +118,8 @@ export class LFDLParser {
                 return {
                     type: 'command',
                     command: 'straight',
-                    args: [parseFloat(args[0])]
+                    args: [parseFloat(args[0])],
+                    lineNumber: lineNumber
                 }
 
             case 'arc':
@@ -132,7 +133,8 @@ export class LFDLParser {
                 return {
                     type: 'command',
                     command: 'arc',
-                    args: [side, parseFloat(args[1]), parseFloat(args[2])]
+                    args: [side, parseFloat(args[1]), parseFloat(args[2])],
+                    lineNumber: lineNumber
                 }
 
             default:

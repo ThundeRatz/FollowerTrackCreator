@@ -95,6 +95,10 @@ class FollowerTrackApp {
                 this.debouncedUpdate()
             })
 
+            this.editorManager.onCursorChange((lineNumber) => {
+                this.highlightLine(lineNumber)
+            })
+
             console.log('Monaco Editor ready')
         } catch (error) {
             console.error('Failed to initialize Monaco Editor:', error)
@@ -127,7 +131,8 @@ class FollowerTrackApp {
         this.editorManager = {
             getValue: () => textarea.value,
             setValue: (value) => { textarea.value = value },
-            isReady: () => true
+            isReady: () => true,
+            onCursorChange: () => {}
         }
 
         console.log('Textarea fallback ready')
@@ -240,6 +245,16 @@ class FollowerTrackApp {
     showError(message) {
         console.error(message)
         this.elements.info.textContent = 'Erro: ' + message
+    }
+
+    /**
+     * Highlight line in canvas based on cursor position
+     * @param {number} lineNumber - Current cursor line (1-based)
+     */
+    highlightLine(lineNumber) {
+        if (this.renderer && this.renderer.p5Instance) {
+            this.renderer.setHighlightLine(lineNumber)
+        }
     }
 }
 

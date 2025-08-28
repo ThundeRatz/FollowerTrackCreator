@@ -95,6 +95,12 @@ export class EditorManager {
                 this.changeCallback(this.getValue())
             }
         })
+
+        this.editor.onDidChangeCursorPosition((e) => {
+            if (this.cursorChangeCallback) {
+                this.cursorChangeCallback(e.position.lineNumber)
+            }
+        })
     }
 
     /**
@@ -103,6 +109,14 @@ export class EditorManager {
      */
     onChange(callback) {
         this.changeCallback = callback
+    }
+
+    /**
+     * Set cursor position change callback function
+     * @param {Function} callback - Callback function to call on cursor change
+     */
+    onCursorChange(callback) {
+        this.cursorChangeCallback = callback
     }
 
     /**

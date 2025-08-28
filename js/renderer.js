@@ -11,6 +11,7 @@ export class TrackRenderer {
             start: { x: 100, y: 200, angle: 0 }
         }
         this.commands = []
+        this.highlightLineNumber = null
 
         this.MARK_SIZE = 4
         this.MARK_OFFSET = 4
@@ -63,6 +64,17 @@ export class TrackRenderer {
     }
 
     /**
+     * Set which line number to highlight
+     * @param {number} lineNumber - Line number to highlight (1-based)
+     */
+    setHighlightLine(lineNumber) {
+        this.highlightLineNumber = lineNumber
+        if (this.p5Instance) {
+            this.drawFrame(this.p5Instance)
+        }
+    }
+
+    /**
      * Draw complete frame - follows original PyQt5 logic with @directives
      */
     drawFrame(p) {
@@ -88,9 +100,11 @@ export class TrackRenderer {
                 this.drawMark(p, x, y, theta, false)
             }
 
+            const isHighlighted = command.lineNumber === this.highlightLineNumber
+
             if (cmd === "straight" && command.args.length === 1) {
                 const d = command.args[0]
-                const result = this.drawLine(p, x, y, theta, d)
+                const result = this.drawLine(p, x, y, theta, d, isHighlighted)
                 x = result.x
                 y = result.y
                 theta = result.theta
@@ -100,7 +114,7 @@ export class TrackRenderer {
                 const side = command.args[0]
                 const radius = command.args[1]
                 const angle = command.args[2]
-                const result = this.drawArc(p, x, y, theta, side, radius, angle)
+                const result = this.drawArc(p, x, y, theta, side, radius, angle, isHighlighted)
                 x = result.x
                 y = result.y
                 theta = result.theta
@@ -144,9 +158,17 @@ export class TrackRenderer {
      * @param {number} d - Distance
      * @returns {Object} New position
      */
-    drawLine(p, x, y, theta, d) {
+    drawLine(p, x, y, theta, d, isHighlighted = false) {
         const dx = d * Math.cos(this.degToRad(theta))
         const dy = -d * Math.sin(this.degToRad(theta))
+
+        if (isHighlighted) {
+            p.stroke('#58a6ff')
+            p.strokeWeight(4)
+        } else {
+            p.stroke(255)
+            p.strokeWeight(1.9)
+        }
 
         p.line(x, y, x + dx, y + dy)
 
@@ -164,7 +186,7 @@ export class TrackRenderer {
      * @param {number} angle - Arc angle in degrees
      * @returns {Object} New position and angle
      */
-    drawArc(p, x, y, theta, side, radius, angle) {
+    drawArc(p, x, y, theta, side, radius, angle, isHighlighted = false) {
 
         const centerTurn = side === 'l' ? -90 : 90
         let drawAngle = angle
@@ -175,6 +197,14 @@ export class TrackRenderer {
 
         const cx = x + radius * Math.cos(this.degToRad(theta - centerTurn))
         const cy = y - radius * Math.sin(this.degToRad(theta - centerTurn))
+
+        if (isHighlighted) {
+            p.stroke('#58a6ff')
+            p.strokeWeight(4)
+        } else {
+            p.stroke(255)
+            p.strokeWeight(1.9)
+        }
 
         const startAngle = this.degToRad(-(theta + centerTurn))
         const sweepAngle = this.degToRad(-drawAngle)

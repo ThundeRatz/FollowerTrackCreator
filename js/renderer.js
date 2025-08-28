@@ -13,6 +13,13 @@ export class TrackRenderer {
         this.commands = []
         this.highlightLineNumber = null
 
+        this.zoom = 1.0
+        this.panX = 0
+        this.panY = 0
+        this.isDragging = false
+        this.dragStartX = 0
+        this.dragStartY = 0
+
         this.MARK_SIZE = 4
         this.MARK_OFFSET = 4
         this.RECT_MARGIN = 30
@@ -41,6 +48,41 @@ export class TrackRenderer {
 
                         console.log('p5.js canvas created successfully')
                         resolve()
+                    }
+
+                    p.mouseWheel = (event) => {
+                        const zoomSensitivity = 0.001
+                        this.zoom *= (1 - event.delta * zoomSensitivity)
+                        this.zoom = p.constrain(this.zoom, 0.1, 5.0)
+                        this.drawFrame(p)
+
+                        if (this.zoomChangeCallback) {
+                            this.zoomChangeCallback()
+                        }
+
+                        return false
+                    }
+
+                    p.mousePressed = () => {
+                        if (p.mouseX >= 0 && p.mouseX <= p.width && p.mouseY >= 0 && p.mouseY <= p.height) {
+                            this.isDragging = true
+                            this.dragStartX = p.mouseX
+                            this.dragStartY = p.mouseY
+                        }
+                    }
+
+                    p.mouseDragged = () => {
+                        if (this.isDragging) {
+                            this.panX += (p.mouseX - this.dragStartX) / this.zoom
+                            this.panY += (p.mouseY - this.dragStartY) / this.zoom
+                            this.dragStartX = p.mouseX
+                            this.dragStartY = p.mouseY
+                            this.drawFrame(p)
+                        }
+                    }
+
+                    p.mouseReleased = () => {
+                        this.isDragging = false
                     }
 
                 }, container)
@@ -75,14 +117,27 @@ export class TrackRenderer {
     }
 
     /**
+     * Set callback for zoom changes
+     * @param {Function} callback - Callback to call when zoom changes
+     */
+    onZoomChange(callback) {
+        this.zoomChangeCallback = callback
+    }
+
+    /**
      * Draw complete frame - follows original PyQt5 logic with @directives
      */
     drawFrame(p) {
 
         p.background('#161b22')
 
+        p.push()
+        p.translate(p.width/2, p.height/2)
+        p.scale(this.zoom)
+        p.translate(-p.width/2 + this.panX, -p.height/2 + this.panY)
+
         p.stroke(255)
-        p.strokeWeight(1.9)
+        p.strokeWeight(1.9 / this.zoom)
         p.noFill()
 
         let x = this.config.start.x
@@ -125,6 +180,8 @@ export class TrackRenderer {
         if (!firstStep) {
             this.drawMark(p, x, y, theta, true)
         }
+
+        p.pop()
     }
 
     /**
@@ -164,10 +221,10 @@ export class TrackRenderer {
 
         if (isHighlighted) {
             p.stroke('#58a6ff')
-            p.strokeWeight(4)
+            p.strokeWeight(4 / this.zoom)
         } else {
             p.stroke(255)
-            p.strokeWeight(1.9)
+            p.strokeWeight(1.9 / this.zoom)
         }
 
         p.line(x, y, x + dx, y + dy)
@@ -200,10 +257,10 @@ export class TrackRenderer {
 
         if (isHighlighted) {
             p.stroke('#58a6ff')
-            p.strokeWeight(4)
+            p.strokeWeight(4 / this.zoom)
         } else {
             p.stroke(255)
-            p.strokeWeight(1.9)
+            p.strokeWeight(1.9 / this.zoom)
         }
 
         const startAngle = this.degToRad(-(theta + centerTurn))
@@ -239,6 +296,51 @@ export class TrackRenderer {
      */
     degToRad(angle) {
         return Math.PI * angle / 180
+    }
+
+    /**
+     * Get current zoom level as percentage
+     * @returns {number} Zoom level as percentage (100 = 100%)
+     */
+    getZoomPercentage() {
+        return Math.round(this.zoom * 100)
+    }
+
+    /**
+     * Set zoom level
+     * @param {number} zoomLevel - Zoom level (1.0 = 100%)
+     */
+    setZoom(zoomLevel) {
+        this.zoom = Math.max(0.1, Math.min(5.0, zoomLevel))
+        if (this.p5Instance) {
+            this.drawFrame(this.p5Instance)
+        }
+    }
+
+    /**
+     * Zoom in by factor
+     */
+    zoomIn() {
+        this.setZoom(this.zoom * 1.2)
+    }
+
+    /**
+     * Zoom out by factor
+     */
+    zoomOut() {
+        this.setZoom(this.zoom / 1.2)
+    }
+
+    /**
+     * Reset zoom to 100%
+     */
+    resetZoom() {
+        this.zoom = 1.0
+        this.panX = 0
+        this.panY = 0
+        if (this.p5Instance) {
+            this.drawFrame(this.p5Instance)
+        }
     }
 
     /**

@@ -35,6 +35,7 @@ class FollowerTrackApp {
             this.setupEventListeners()
 
             this.loadExample()
+            this.updateZoomIndicator()
 
             console.log('FollowerTrackCreator initialized!')
 
@@ -78,7 +79,11 @@ class FollowerTrackApp {
             canvas: document.getElementById('canvas-container'),
             info: document.getElementById('track-info'),
             btnExample: document.getElementById('btn-example'),
-            btnClear: document.getElementById('btn-clear')
+            btnClear: document.getElementById('btn-clear'),
+            btnZoomIn: document.getElementById('btn-zoom-in'),
+            btnZoomOut: document.getElementById('btn-zoom-out'),
+            btnZoomReset: document.getElementById('btn-zoom-reset'),
+            zoomIndicator: document.getElementById('zoom-indicator')
         }
 
         for (const [name, el] of Object.entries(this.elements)) {
@@ -149,6 +154,11 @@ class FollowerTrackApp {
 
         try {
             await this.renderer.init(this.elements.canvas)
+
+            this.renderer.onZoomChange(() => {
+                this.updateZoomIndicator()
+            })
+
             console.log('Renderer ready')
         } catch (error) {
             console.error('Renderer failed:', error)
@@ -169,6 +179,21 @@ class FollowerTrackApp {
                 this.editorManager.setValue('')
                 this.elements.info.textContent = 'Editor limpo'
             }
+        })
+
+        this.elements.btnZoomIn.addEventListener('click', () => {
+            this.renderer.zoomIn()
+            this.updateZoomIndicator()
+        })
+
+        this.elements.btnZoomOut.addEventListener('click', () => {
+            this.renderer.zoomOut()
+            this.updateZoomIndicator()
+        })
+
+        this.elements.btnZoomReset.addEventListener('click', () => {
+            this.renderer.resetZoom()
+            this.updateZoomIndicator()
         })
     }
 
@@ -245,6 +270,14 @@ class FollowerTrackApp {
     showError(message) {
         console.error(message)
         this.elements.info.textContent = 'Erro: ' + message
+    }
+
+    /**
+     * Update zoom indicator with current zoom level
+     */
+    updateZoomIndicator() {
+        const zoomPercentage = this.renderer.getZoomPercentage()
+        this.elements.zoomIndicator.textContent = `${zoomPercentage}%`
     }
 
     /**

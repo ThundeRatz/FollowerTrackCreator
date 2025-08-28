@@ -28,8 +28,16 @@
         <div class="canvas-panel">
             <div class="canvas-header">
                 <h2>Pista Preview</h2>
-                <div class="canvas-info">
-                    <span id="track-info">Pronto para desenhar</span>
+                <div class="canvas-controls">
+                    <div class="zoom-controls">
+                        <button id="btn-zoom-out" class="zoom-btn" title="Zoom Out">−</button>
+                        <span id="zoom-indicator" class="zoom-indicator">100%</span>
+                        <button id="btn-zoom-in" class="zoom-btn" title="Zoom In">+</button>
+                        <button id="btn-zoom-reset" class="zoom-btn" title="Reset Zoom">⊙</button>
+                    </div>
+                    <div class="canvas-info">
+                        <span id="track-info">Pronto para desenhar</span>
+                    </div>
                 </div>
             </div>
             <div id="canvas-container"></div>

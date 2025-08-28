@@ -175,6 +175,58 @@ body {
     font-family: inherit;
 }
 
+.canvas-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #161b22;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+}
+
+.zoom-btn {
+    background: transparent;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    line-height: 1;
+}
+
+.zoom-btn:hover {
+    background: #30363d;
+    color: #f0f6fc;
+}
+
+.zoom-btn:active {
+    background: #484f58;
+}
+
+.zoom-indicator {
+    font-size: 11px;
+    font-weight: 500;
+    color: #f0f6fc;
+    min-width: 36px;
+    text-align: center;
+    font-family: inherit;
+}
+
 .canvas-info {
     font-size: 12px;
     font-weight: 500;

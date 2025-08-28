@@ -31,11 +31,11 @@ export class TrackRenderer {
             try {
                 this.p5Instance = new p5((p) => {
                     p.setup = () => {
-                        const canvasWidth = Math.min(800, container.clientWidth - 20)
-                        const canvasHeight = Math.min(600, container.clientHeight - 20)
+                        const canvasWidth = Math.min(1200, container.clientWidth - 40)
+                        const canvasHeight = Math.min(900, container.clientHeight - 40)
 
                         p.createCanvas(canvasWidth, canvasHeight)
-                        p.background(0)
+                        p.background('#161b22')
                         p.noLoop()
 
                         console.log('p5.js canvas created successfully')
@@ -67,7 +67,7 @@ export class TrackRenderer {
      */
     drawFrame(p) {
 
-        p.background(0)
+        p.background('#161b22')
 
         p.stroke(255)
         p.strokeWeight(1.9)
@@ -228,8 +228,8 @@ export class TrackRenderer {
     resize(container) {
         if (!this.p5Instance) return
 
-        const newWidth = Math.min(800, container.clientWidth - 20)
-        const newHeight = Math.min(600, container.clientHeight - 20)
+        const newWidth = Math.min(1200, container.clientWidth - 40)
+        const newHeight = Math.min(900, container.clientHeight - 40)
 
         this.p5Instance.resizeCanvas(newWidth, newHeight)
         this.p5Instance.redraw()

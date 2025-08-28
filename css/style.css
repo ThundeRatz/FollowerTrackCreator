@@ -179,6 +179,7 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+    height: 30px;
 }
 
 .zoom-controls {
@@ -189,6 +190,7 @@ body {
     padding: 4px 8px;
     border-radius: 6px;
     border: 1px solid #30363d;
+    height: 100%;
 }
 
 .zoom-btn {
@@ -235,6 +237,9 @@ body {
     padding: 4px 8px;
     border-radius: 6px;
     border: 1px solid #30363d;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 #canvas-container {
